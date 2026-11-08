@@ -53,3 +53,70 @@ Another thing to consider, we want our model to predict hotel guests who will ca
 | total_of_special_request | Number of special requests made by the customer (e.g. twin bed or high floor). |
 | is_canceled | Value indicating if the booking was canceled (1) or not (0). |
 
+### Data Preprocessing:
+Handling missing values\
+Handling outlier data\
+Binning to simplify categorical data (by using Statistical test)\
+Scaling to simplify numerical data\
+Encoding categorical data (by using One-hot Encoder)
+
+### Modeling Process:
+Find best machine learning algorithm through cross validation\
+First hyperparameter tuning through GridSearch\
+Review model performance to validation data\
+Review and reselect feature through feature importance\
+Remodel dan hyperparameter tuning\
+Find best model\
+Second hyperparameter tuning through GridSearch\
+Review model performance through Confusion Matrix
+
+### Chosen Model Algorithm
+Light Gradient Boost Classifier works well with F-score (beta = 0.5) on Test Data 76.02%.\
+Features that are used a lot during tree split are: Booking Changes, Months Wait List, Customer Type (Transient & Transient Party) and European guests.
+<img width="4154" height="2494" alt="Mod_LGBoost_Hotel_Booking_F_Importance" src="https://github.com/user-attachments/assets/c122ff93-6cd2-4f5c-bede-faca335ad5d6" />
+
+### Model Interpretation
+Model is interpreted through SHAP Beeswarm plot. 
+<img width="2373" height="2819" alt="Mod_LGBoost_Hotel_Booking_SHAP_Plot" src="https://github.com/user-attachments/assets/9d1554a5-c4d9-46dd-93ee-be8620ead31f" />
+
+**Guest who will likely cancel bookings**
+* Non refund guests
+* Domestic guests
+* Online Travel Agent
+* Without Request Parking
+* Without Special Requests
+* Guests without cancel history and 1 cancel history
+
+### Business Impact:
+| Before Machine Learning | After Machine Learning |
+| --- | --- |
+| <img width="455" height="330" alt="image" src="https://github.com/user-attachments/assets/7075311f-63b6-48d9-8cad-a688c5475c0c" /> | <img width="444" height="330" alt="image" src="https://github.com/user-attachments/assets/269bef3c-d04b-4aa5-80ab-b059cfce4216" /> |
+|  | Threshold = 0.9 | 
+| Canceled bookings : 6.156 bookings (from Test Data) <br> = 6.156 bookings x EUR 21 (EUR 70 x 30%) <br> = EUR 129k | Canceled bookings : 3.862 bookings (from Test Data) <br> Amount received from canceled bookings: <br> = 3.862 bookings x EUR 21 (EUR 70 x 30%) <br> = EUR 81k <br> Amount received from resell rooms: <br> = 2.294 bookings x EUR 70 x 50% rooms <br> = EUR 80k |
+|  | Assumption: 50% of canceled rooms can be resell again for the same night |
+
+**Saved Amount = 161k – 129k = 32k / year**\
+This amount can be higher, if management/stakeholder decide to lower down threshold (as more True Positive predicted)
+
+### Recommendations:
+Customer who booked with 'No Refund Deposit' canceled their bookings mostly (99%).\
+This issue can be solved by imply maximum check-in time for those bookings (Example: until 19:00 or early notice).\
+After hotel guest do not show up, this room can be sold to another walk-in guests. Therefore, daily occupancy rate can be increased.\
+Data from marketing segment shown that "Group" segment has 61% of canceled bookings. This group consist of 42% transient and 53% transient-party.\
+Marketing can make special "hotel deals" targeted to this group.
+
+### Model Improvement:
+To improve this model to suit better for business decision and recommendation, it is essential to know about the daily occupancy rate.\
+After knowing about this, it can be compared with the average occupancy rate of the city/country. Most of 4-star hotel recorded 70-80% daily occupancy rate in general. The number will be higher during high-season months, or lower during off-season. Therefore, Staying_Date date will be needed.\
+Additionally, Staying_Month will also increasing model performance, because we can understand if there are specific seasonal bookings pattern.\
+Example: hotel guests will not cancel their bookings during high-season month, and vice-versa. This can be combined with National Holidays or School Holidays too.\
+If the hotel has membership, Membership_Level or Membership_Status also can be used to understand the customers behavior, and used as a feature to predict.
+
+
+
+
+
+
+
+
+
